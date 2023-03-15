@@ -1,0 +1,50 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/projfrontend/node_modules
+/projfrontend/.pnp
+/projfrontend/.pnp.js
+
+# testing
+/projfrontend/coverage
+
+# production
+/projfrontend/build
+
+# misc
+/projfrontend/.DS_Store
+/projfrontend/.env.local
+/projfrontend/.env.development.local
+/projfrontend/.env.test.local
+/projfrontend/.env.production.local
+
+/projfrontend/npm-debug.log*
+/projfrontend/yarn-debug.log*
+/projfrontend/yarn-error.log*
+
+####
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/projbackend/node_modules 
+/projbackend/.pnp
+/projbackend/.pnp.js
+
+# testing
+/projbackend/coverage
+
+# production
+/projbackend/build
+
+# misc
+/projbackend/.DS_Store
+/projbackend/.env.local
+/projbackend/.env.development.local
+/projbackend/.env.test.local
+/projbackend/.env.production.local
+
+/projbackend/npm-debug.log*
+/projbackend/yarn-debug.log*
+/projbackend/yarn-error.log*
+
