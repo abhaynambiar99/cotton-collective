@@ -85,15 +85,16 @@ exports.photo = (req, res, next) => {
 
 exports.deleteProduct = (req, res) => {
   let product = req.product;
-  product.remove(err, deletedProduct);
-  if (err) {
-    return res.status(400).json({
-      error: "FAILED to delete product",
+  product.remove((err, deletedProduct) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Failed to delete product",
+      });
+    }
+    res.json({
+      message: "Product deleted successfully",
+      deletedProduct,
     });
-  }
-  res.json({
-    message: "Product deleted successfully",
-    deletedProduct,
   });
 };
 
@@ -116,7 +117,7 @@ exports.updateProduct = (req, res) => {
     if (file.photo) {
       if (file.photo.size > 3000000) {
         return (
-          res.status(400),
+          res.status(400).
           json({
             error: "File size too big",
           })
@@ -131,13 +132,15 @@ exports.updateProduct = (req, res) => {
 
     product.save((err, product) => {
       if (err) {
-        res.status(400).json({
-          error: " FAILED to UPDATE tshirt in DB",
+        return res.status(400).json({
+          error: "FAILED to UPDATE tshirt in DB",
         });
       }
-
+    
       res.json(product);
     });
+    
+
   });
 };
 
@@ -146,18 +149,20 @@ exports.getAllProducts = (req, res) => {
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
 
   Product.find()
-    .select("-photo")
-    .populate("category")
-    .sort([[sortBy, "asc"]])
-    .limit(limit)
-    .exec(err, products);
-  if (err) {
-    return res.status(400).json({
-      message: "NO products found",
-    });
-  }
-  res.json(products);
-};
+  .select("-photo")
+  .populate("category")
+  .sort([[sortBy, "asc"]])
+  .limit(limit)
+  .exec((err, products) => {
+    if (err) {
+      return res.status(400).json({
+        message: "NO products found",
+      });
+    }
+    res.json(products);
+
+})
+}
 
 exports.getAllUniqueCategories = (req, res) => {
   Product.distinct("category", {}, (err, category) => {
@@ -174,12 +179,12 @@ exports.updateStock = (req, res, next) => {
   let myOperations = req.body.order.products.map((prod) => {
     return {
       updateOne: {
-        filter: { id: prod._id },
+        filter: { _id: prod._id },
         update: { $inc: { stock: -prod.count, sold: +prod.count } },
       },
     };
   });
-  Product.bulkWrite(myOperations, {}, (error, products) => {
+  Product.bulkWrite(myOperations, {}, (err, products) => {
     if (err) {
       return res.status(400).json({
         error: "Bulk operation FAILED",

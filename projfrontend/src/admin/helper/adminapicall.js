@@ -51,23 +51,23 @@ export const createProduct = (userId, token, product) => {
 //get all products
 export const getAllProducts = () => {
   return fetch(`${API}/products`, {
-    method: "GET",
+    method: "GET"
   })
-    .then((response) => {
-      return response.json();
+    .then( (response) => {
+      return response.json()
     })
-    .catch((err) => console.log(err));
-};
+    .catch(err => console.log(err))
+}
 
 //getting a single product
-export const getAProduct = (productId) => {
+export const getAProduct = productId => {
   return fetch(`${API}/product/${productId}`, {
-    method: "GET",
+    method: "GET"
   })
-    .then((response) => {
+    .then(response => {
       return response.json();
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
 };
 
 //updateproduct
@@ -75,12 +75,12 @@ export const getAProduct = (productId) => {
 export const updateProduct = (productId, userId, token, product) => {
   return fetch(`${API}/product/${productId}/${userId}`, {
     method: "PUT",
-
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json", // add this header
     },
-    body: product,
+    body: JSON.stringify(product), // stringify the product object
   })
     .then((response) => {
       return response.json();

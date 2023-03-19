@@ -17,20 +17,19 @@ const Base = ({
         </div>
         <div className={className}> {children} </div>
       </div>
-      <footer className="footer bg-dark mt-auto py-3">
-        <div className="container-fluid bg-success text-white text-center py-3">
-          <h4> If you got any questions feel free to reach out</h4>
-          <button className="btn btn-warning btn-lg">Contact us</button>
-        </div>
-
-        <div className="container">
-          <span className="text-muted">
-            {" "}
-            The <span className="text-white"> Cotton Collective </span> by{" "}
-            <span className="text-white"> Abhay Nambiar </span>
-          </span>
-        </div>
-      </footer>
+      <footer className="bg-dark text-white py-3">
+  <div className="container">
+    <div className="row">
+      <div className="col-md-6">
+        <h4 className="text-success">If you have any questions, feel free to reach out</h4>
+        <button className="btn btn-warning">Contact us</button>
+      </div>
+      <div className="col-md-6">
+        <p className="text-muted mb-0 text-end">Created by <span className="fw-bold">Abhay Nambiar</span> at <span className="fw-bold">The Cotton Collective</span></p>
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }

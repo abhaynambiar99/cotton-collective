@@ -13,6 +13,8 @@ import PrivateRoute from "./auth/helper/PrivateRoute";
 import AddCategory from "./admin/AddCategory";
 import ManageCategories from "./admin/ManageCategories";
 import AddProduct from "./admin/AddProduct";
+import ManageProducts from "./admin/ManageProducts";
+import UpdateProduct from "./admin/UpdateProduct";
 
 const Routing = () => {
   return (
@@ -88,6 +90,36 @@ const Routing = () => {
           element={
             isAuthenticated() && isAuthenticated().user.role === 1 ? (
               <AddProduct />
+            ) : (
+              <Navigate
+                to="/"
+                state={{ from: window.location.pathname }}
+                replace
+              />
+            )
+          }
+        ></Route>
+
+        <Route
+          path="/admin/products"
+          element={
+            isAuthenticated() && isAuthenticated().user.role === 1 ? (
+              <ManageProducts />
+            ) : (
+              <Navigate
+                to="/"
+                state={{ from: window.location.pathname }}
+                replace
+              />
+            )
+          }
+        ></Route>
+
+        <Route
+          path="/admin/product/:productId/:userId"
+          element={
+            isAuthenticated() && isAuthenticated().user.role === 1 ? (
+              <UpdateProduct />
             ) : (
               <Navigate
                 to="/"
