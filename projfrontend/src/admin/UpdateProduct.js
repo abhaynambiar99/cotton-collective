@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Base from "../core/Base";
-import { useParams } from "react-router-dom";
+
 
 import {
   createProduct,
@@ -13,6 +13,7 @@ import {
 import { isAuthenticated } from "../auth/helper";
 
 const UpdateProduct = () => {
+  const { productId, userId } = useParams(); // get id from URL
   const { user, token } = isAuthenticated();
 
   const [values, setValues] = useState({
@@ -25,10 +26,9 @@ const UpdateProduct = () => {
     category: "",
     loading: false,
     error: "",
-    createdProduct: "",
+    updatedProduct: "",
     getaRedirect: false,
     formData: "",
-    //formData: new FormData(),
   });
 
   const {
@@ -36,12 +36,11 @@ const UpdateProduct = () => {
     description,
     price,
     stock,
-    photo,
     categories,
     category,
     loading,
     error,
-    createdProduct,
+    updatedProduct,
     getaRedirect,
     formData,
   } = values;
@@ -59,13 +58,15 @@ const UpdateProduct = () => {
     });
   };
 
-  const preload = (productId, userId) => {
+  const preload = (productId) => {
     getAProduct(productId).then((data) => {
       //console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         preloadCategories();
+        console.log(data)
+        
         setValues({
           ...values,
           name: data.name,
@@ -75,27 +76,31 @@ const UpdateProduct = () => {
           stock: data.stock,
           formData: new FormData(),
         });
-        
       }
     });
   };
 
-  const { productId, userId} = useParams(); //get id from url
-
   useEffect(() => {
-    //preload(match.params.productId);
-    preload(productId, userId);
+
+    preload(productId);
   }, [productId, userId]);
 
-  
+  //TODO: work on it
+
   const onSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    
-    updateProduct( productId ,user._id, token, formData).then((data) => {
+
+    //console.log(userId,"    " ,user._id);
+
+    console.log("THis is ",formData);
+
+    updateProduct(productId, user._id, token, formData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
+        console.log("setval comp");
       } else {
+        console.log("going into else");
         setValues({
           ...values,
           name: "",
@@ -104,14 +109,15 @@ const UpdateProduct = () => {
           photo: "",
           stock: "",
           loading: false,
-          createdProduct: data.name,
+          updatedProduct: data.name,
         });
-        console.log("created product name set to: ",data.name)
       }
-    });
+    }).catch((err) => console.log(err));
   };
 
   const handleChange = (name) => (event) => {
+    console.log("Line 1 handle change");
+
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, [name]: value });
@@ -120,11 +126,11 @@ const UpdateProduct = () => {
   const successMessage = () => (
     <div
       className="alert alert-success mt-3"
-      style={{ display: createdProduct ? "" : "none" }}
+      style={{ display: updatedProduct ? "" : "none" }}
     >
-      {createdProduct && (
-        <h4>{createdProduct} updated successfully</h4>
-      )}
+      {" "}
+      {console.log("success message")}
+      {updatedProduct && <h4>{updatedProduct} updated successfully</h4>}
     </div>
   );
 
@@ -218,7 +224,8 @@ const UpdateProduct = () => {
       <div className="row bg-dark text-white rounded">
         <div className="col-md-8 offset-md-2">
           {" "}
-          {successMessage()} {updateProductForm()} 
+          {successMessage()}
+          {updateProductForm()}
         </div>
       </div>
     </Base>

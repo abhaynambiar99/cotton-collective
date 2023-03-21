@@ -99,6 +99,7 @@ exports.deleteProduct = (req, res) => {
 };
 
 exports.updateProduct = (req, res) => {
+  
   let form = new formidable.IncomingForm();
 
   form.keepExtensions = true;
@@ -114,7 +115,10 @@ exports.updateProduct = (req, res) => {
 
     product = _.extend(product, fields);
 
+    console.log(file.photo)
     if (file.photo) {
+
+      console.log("Photo here")
       if (file.photo.size > 3000000) {
         return (
           res.status(400).
