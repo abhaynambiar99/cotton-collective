@@ -15,6 +15,7 @@ import ManageCategories from "./admin/ManageCategories";
 import AddProduct from "./admin/AddProduct";
 import ManageProducts from "./admin/ManageProducts";
 import UpdateProduct from "./admin/UpdateProduct";
+import UpdateCategory from "./admin/UpdateCategory";
 
 const Routing = () => {
   return (
@@ -85,6 +86,21 @@ const Routing = () => {
           }
         ></Route>
 
+<Route
+          path="/admin/category/update/:categoryId"
+          element={
+            isAuthenticated() && isAuthenticated().user.role === 1 ? (
+              <UpdateCategory />
+            ) : (
+              <Navigate
+                to="/"
+                state={{ from: window.location.pathname }}
+                replace
+              />
+            )
+          }
+        ></Route>
+
         <Route
           path="/admin/create/product"
           element={
@@ -116,7 +132,7 @@ const Routing = () => {
         ></Route>
 
         <Route
-          path="/admin/product/:productId/:userId"
+          path="/admin/product/update/:productId"
           element={
             isAuthenticated() && isAuthenticated().user.role === 1 ? (
               <UpdateProduct />
@@ -129,6 +145,7 @@ const Routing = () => {
             )
           }
         ></Route>
+
       </Routes>
     </BrowserRouter>
   );

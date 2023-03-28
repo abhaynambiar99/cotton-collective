@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Base from "../core/Base";
 
-
 import {
   createProduct,
   getCategories,
@@ -12,9 +11,11 @@ import {
 
 import { isAuthenticated } from "../auth/helper";
 
+
+
 const UpdateProduct = () => {
-  const { productId, userId } = useParams(); // get id from URL
   const { user, token } = isAuthenticated();
+  const { productId } = useParams(); // get id from URL
 
   const [values, setValues] = useState({
     name: "",
@@ -26,9 +27,9 @@ const UpdateProduct = () => {
     category: "",
     loading: false,
     error: "",
-    updatedProduct: "",
+    createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: ""
   });
 
   const {
@@ -40,33 +41,18 @@ const UpdateProduct = () => {
     category,
     loading,
     error,
-    updatedProduct,
+    createdProduct,
     getaRedirect,
-    formData,
+    formData
   } = values;
 
-  const preloadCategories = () => {
-    getCategories().then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          categories: data,
-          formData: new FormData(),
-        });
-      }
-    });
-  };
-
-  const preload = (productId) => {
-    getAProduct(productId).then((data) => {
+  const preload = productId => {
+    getAProduct(productId).then(data => {
       //console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         preloadCategories();
-        console.log(data)
-        
         setValues({
           ...values,
           name: data.name,
@@ -74,50 +60,55 @@ const UpdateProduct = () => {
           price: data.price,
           category: data.category._id,
           stock: data.stock,
-          formData: new FormData(),
+          formData: new FormData()
+        });
+      }
+    });
+  };
+
+  const preloadCategories = () => {
+    getCategories().then(data => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          categories: data,
+          formData: new FormData()
         });
       }
     });
   };
 
   useEffect(() => {
-
     preload(productId);
-  }, [productId, userId]);
+  }, []);
 
   //TODO: work on it
-
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
 
-    //console.log(userId,"    " ,user._id);
-
-    console.log("THis is ",formData);
-
-    updateProduct(productId, user._id, token, formData).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-        console.log("setval comp");
-      } else {
-        console.log("going into else");
-        setValues({
-          ...values,
-          name: "",
-          description: "",
-          price: "",
-          photo: "",
-          stock: "",
-          loading: false,
-          updatedProduct: data.name,
-        });
+    updateProduct(productId, user._id, token, formData).then(
+      data => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues({
+            ...values,
+            name: "",
+            description: "",
+            price: "",
+            photo: "",
+            stock: "",
+            loading: false,
+            createdProduct: data.name
+          });
+        }
       }
-    }).catch((err) => console.log(err));
+    );
   };
 
-  const handleChange = (name) => (event) => {
-    console.log("Line 1 handle change");
-
+  const handleChange = name => event => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, [name]: value });
@@ -126,15 +117,13 @@ const UpdateProduct = () => {
   const successMessage = () => (
     <div
       className="alert alert-success mt-3"
-      style={{ display: updatedProduct ? "" : "none" }}
+      style={{ display: createdProduct ? "" : "none" }}
     >
-      {" "}
-      {console.log("success message")}
-      {updatedProduct && <h4>{updatedProduct} updated successfully</h4>}
+      <h4>{createdProduct} updated successfully</h4>
     </div>
   );
 
-  const updateProductForm = () => (
+  const createProductForm = () => (
     <form className="mt-3 mb-3">
       <span className="text-white mt-3 mb-3">Post photo</span>
       <div className="form-group">
@@ -203,7 +192,7 @@ const UpdateProduct = () => {
       <button
         type="submit"
         onClick={onSubmit}
-        className="btn btn-outline-success mt-3 mb-3"
+        className="btn btn-outline-success mb-3"
       >
         Update Product
       </button>
@@ -212,20 +201,17 @@ const UpdateProduct = () => {
 
   return (
     <Base
-      title="Update product page"
-      description="Update the product here"
+      title="Add a product here!"
+      description="Welcome to product creation section"
       className="container bg-info p-4"
     >
-      <Link to="/admin/dashboard" className="btn btn-dark mb-3">
-        {" "}
+      <Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3">
         Admin Home
       </Link>
-
       <div className="row bg-dark text-white rounded">
         <div className="col-md-8 offset-md-2">
-          {" "}
           {successMessage()}
-          {updateProductForm()}
+          {createProductForm()}
         </div>
       </div>
     </Base>

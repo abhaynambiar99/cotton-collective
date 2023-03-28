@@ -62,7 +62,7 @@ const ManageProducts = () => {
                 <div className="col-4">
                   <Link
                     className="btn btn-success"
-                    to={`/admin/product/${product._id}/${user._id}`}
+                    to={`/admin/product/update/${product._id}`}
                   >
                     <span className="">Update</span>
                   </Link>
