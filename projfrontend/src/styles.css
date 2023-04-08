@@ -6,12 +6,28 @@
 
 body {
   background: #343a40;
+  margin: 0
 }
-/*
-footer{
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  
-}*/
+footer {
+  position: static;
+  left: 0;
+  bottom: 0;
+  width: 90%;
+  margin-right: 90px;
+}
+
+.contact-section {
+  background-color: #343a40;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.contact-btn {
+  margin-top: 10px;
+}
+
+.fw-bold {
+ 
+  font-weight: 700;
+}

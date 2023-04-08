@@ -1,13 +1,14 @@
 import React from "react";
 import Menu from "./Menu";
-import "../../src/styles.css"
+import "../../src/styles.css";
 
 const Base = ({
   title = "My title",
   description = "My description",
   className = "bg-dark text-white p-4",
   children,
-}) => { return(
+}) => {
+  return (
     <div>
       <Menu />
       <div className="container-fluid">
@@ -17,22 +18,25 @@ const Base = ({
         </div>
         <div className={className}> {children} </div>
       </div>
-      <footer className="bg-dark text-white py-3">
-  <div className="container">
-    <div className="row">
-      <div className="col-md-6">
-        <h4 className="text-success">If you have any questions, feel free to reach out</h4>
-        <button className="btn btn-warning">Contact us</button>
-      </div>
-      <div className="col-md-6">
-        <p className="text-muted mb-0 text-end">Created by <span className="fw-bold">Abhay Nambiar</span> at <span className="fw-bold">The Cotton Collective</span></p>
-      </div>
-    </div>
-  </div>
-</footer>
+      <footer className="items-center text-white py-3 mr-5">
+        <div className="row">
+          <div className="col-md-6 contact-section">
+            <h4 className="text-success">
+              If you have any questions, feel free to reach out
+            </h4>
+            <button className="btn btn-warning contact-btn">Contact Us</button>
+
+            <div className="container">
+              <br />
+              <span className="fw-bold text-muted">
+                The Cotton Collective by Abhay Nambiar
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
-}
-
+};
 
 export default Base;
